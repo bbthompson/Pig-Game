@@ -1,0 +1,43 @@
+﻿<section class="row">
+    <div class="col-md-7">
+        <section class="border border-secondary p-2">
+            <div class="d-flex justify-content-between">
+                <p>Player 1: @Context.Session.GetInt32("Player1Score").ToString()</p>
+                <a asp-action="NewGame" class="btn btn-outline-secondary">New Game</a>
+            </div>
+            <p>Player 2: @Context.Session.GetInt32("Player2Score").ToString()</p>
+        </section>
+        <section class="border border-secondary p-2">
+            <p class="fw-bold">Player @Context.Session.GetString("CurrentPlayer")'s turn</p>
+            <div class="d-flex">
+                @{
+                    var active = "btn btn-outline-secondary me-2";
+                    var disable = "disabled " + active;
+                    <a asp-action="Roll" class=@((Context.Session.GetString("GameStatus") == "OVER") ? disable : active)>Roll</a>
+                    <a asp-action="Hold" class=@((Context.Session.GetString("GameStatus") == "OVER") ? disable : active)>Hold</a>
+                }
+                <p class="ms-md-5 ms-3 me-4">Die: @Context.Session.GetInt32("Die").ToString()</p>
+                <p>Total: @Context.Session.GetInt32("TurnTotal").ToString()</p>
+            </div>
+        </section>
+    </div>
+    <section class="col-md-5">
+        <p class="border border-secondary p-2 m-0">First player to 20 wins.</p>
+        <p class="border border-secondary p-2 m-0">Players take turns rolling the die.</p>
+        <p class="border border-secondary p-2 m-0">Turn ends when player rolls a 1 or chooses to hold.</p>
+        <p class="border border-secondary p-2 m-0">If player rolls a 1, they lose all points earned during that turn.</p>
+        <p class="border border-secondary p-2 m-0">If player holds, points earned during that turn are added to their total.</p>
+    </section>
+</section>
+
+
+@{
+    if (Context.Session.GetString("GameStatus") == "OVER")
+    {
+        <h2 class="mt-3 p-3 bg-primary text-white text-center">Player @Context.Session.GetString("CurrentPlayer") Wins!</h2>
+    }
+}
+
+
+
+        
